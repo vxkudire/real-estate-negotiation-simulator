@@ -20,9 +20,9 @@ from pathlib import Path
 
 
 def run_server(port: int) -> None:
-    from mcp.server.fastmcp import FastMCP
+    from mcp.server.mcpserver import MCPServer
 
-    mcp = FastMCP("http-transport-demo")
+    mcp = MCPServer("http-transport-demo")
 
     @mcp.tool()
     def echo(text: str) -> str:
@@ -32,18 +32,16 @@ def run_server(port: int) -> None:
     # FastMCP's HTTP transport is the spec's "Streamable HTTP" — the
     # successor to raw SSE for HTTP-based MCP servers.
     print(f"Serving MCP on http://127.0.0.1:{port}/mcp", flush=True)
-    mcp.settings.host = "127.0.0.1"
-    mcp.settings.port = port
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="streamable-http", host="127.0.0.1", port=port)
 
 
 async def run_client(port: int) -> None:
     from mcp import ClientSession
-    from mcp.client.streamable_http import streamablehttp_client
+    from mcp.client.streamable_http import streamable_http_client
 
     url = f"http://127.0.0.1:{port}/mcp"
     print(f"Connecting client to {url}")
-    async with streamablehttp_client(url) as (read, write, _):
+    async with streamable_http_client(url) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = await session.list_tools()

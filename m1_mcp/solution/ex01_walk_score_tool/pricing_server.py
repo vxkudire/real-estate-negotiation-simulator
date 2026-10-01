@@ -22,10 +22,10 @@ import random
 import sys
 from typing import Literal
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 
-mcp = FastMCP("real-estate-pricing")
+mcp = MCPServer("real-estate-pricing")
 
 
 # ─── Existing tools (abbreviated for the solution — full data lives in
@@ -184,7 +184,6 @@ if __name__ == "__main__":
         print(f"pricing_server (ex01 solution) OK  tools={tools}")
         sys.exit(0)
     elif args.sse:
-        mcp.settings.port = args.port
-        mcp.run(transport="sse")
+        mcp.run(transport="sse", host="0.0.0.0", port=args.port)
     else:
         mcp.run()
