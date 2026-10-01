@@ -53,12 +53,12 @@ from typing import Literal
 
 # FastMCP is the Pythonic way to build MCP servers
 # Install: pip install mcp
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 
-# ─── Initialize FastMCP Server ────────────────────────────────────────────────
+# ─── Initialize FastMCP Server ────────────────────────────────────────────────`
 
-mcp = FastMCP(
+mcp = MCPServer(
     "real-estate-pricing"
 )
 
@@ -515,12 +515,10 @@ if __name__ == "__main__":
         sys.exit(0)
     elif args.sse:
         # SSE mode: run as HTTP endpoint for network clients and multi-client setups.
-        mcp.settings.host = args.host
-        mcp.settings.port = args.port
         print(f"Real Estate Pricing MCP Server (SSE mode)")
         print(f"   Listening on: http://{args.host}:{args.port}/sse")
         print(f"   Connect via: SseServerParams(url='http://localhost:{args.port}/sse')")
-        mcp.run(transport="sse")
+        mcp.run(transport="sse", host=args.host, port=args.port)
     else:
         # stdio mode (default): parent process spawns this server and talks via pipes.
         mcp.run()

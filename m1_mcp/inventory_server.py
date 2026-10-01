@@ -49,12 +49,12 @@ import random
 import sys
 from typing import Optional
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 
 # ─── Initialize Server ────────────────────────────────────────────────────────
 
-mcp = FastMCP(
+mcp = MCPServer(
     "real-estate-inventory"
 )
 
